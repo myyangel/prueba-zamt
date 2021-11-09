@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="report_hr_contract_document">
+            <t t-call="web.external_layout">
+                <t t-set="o" t-value="o.with_context(lang=lang)"/>
+                <t t-set="doc" t-value="o"/>
+                <t t-if="not company">
+                    <!-- Multicompany -->
+                    <t t-if="company_id">
+                        <t t-set="company" t-value="company_id"/>
+                    </t>
+                    <t t-elif="o and 'company_id' in o">
+                        <t t-set="company" t-value="o.company_id.sudo()"/>
+                    </t>
+                    <t t-else="else">
+                        <t t-set="company" t-value="res_company"/>
+                    </t>
+                </t>
+                <div class="page" style="text-align:justify; text-justify:inter-word; margin-right:5%; margin-left:10%;" t-if="o.id">
+                    <t t-set="employee" t-value="o.employee_id"/>
+                    <div class="oe_structure"/>
+                    <div style="page-break-inside:avoid;" class="row text-center">
+                        <div class="col h5">
+                            <span>
+                                <b><u>LIQUIDACIÓN DE BENEFICIOS SOCIALES</u></b><br/>
+                                <b><u>PEQUEÑA EMPRESA</u></b><br/>
+                            </span>
+                        </div>
+                    </div>
+                    <div style="page-break-inside:avoid;">
+                        <div style="margin-left;" class="row col">
+                           <span>NOMBRE DEL TRABAJADOR: <b><t t-esc="employee.name"/> </b></span>
+                        </div>
+                        <div style="margin-left;">
+                            <span>TIPO Y N° DE DOCUMENTO:  <b><span t-esc="employee.identification_id"/></b> </span>
+                        </div>
+                        <div style="margin-left;">
+                            <span>CONDICION / CARGO:  Empleado <b><span t-esc="o.job_id.name"/></b> </span>
+                        </div>
+                        <div style="margin-left;">
+                            <span>MOTIVO DE CESE: <b><span t-esc="o.notes"/></b> </span>
+                        </div>
+                        <div style="margin-left;">
+                            <span>REGIMEN LABORAL: <b><span t-esc="o.notes"/></b> </span>
+                        </div>
+                        <div style="margin-left;">
+                            <span>FECHA DE INGRESO: <b><span t-esc="o.notes"/></b> </span>
+                        </div>
+                        <div style="margin-left;">
+                            <span>FECHA DE CESE: <b><span t-esc="o.notes"/></b> </span>
+                        </div>
+                        <div style="margin-left;">
+                            <span>TIEMPO NO COMPUTABLE: <b><span t-esc="o.notes"/></b> </span>
+                        </div>
+                        <div style="margin-left;">
+                            <span>PERIODO DE TRABAJO COMPUTABLE: <b><span t-esc="o.notes"/></b> </span>
+                        </div>
+                    </div>
+                    <br/>
+                    <br/>
+                    <table class="table table-sm o_main_table">
+                      <thead style="display: table-row-group">
+                        <tr>
+                            <th name="th_segundo" class="text-center" colspan ="2"></th>
+                        </tr>
+                      </thead>
+                      <tbody class="sale_tbody">
+                        <tr>
+                          <td>REMUNERACIÓN BÁSICA: </td>
+                          <td><span t-esc="o.wage"/></td>
+                        </tr>
+                        <tr>
+                          <td>ASIGNACIÓN FAMILIAR: </td>
+                          <td><span t-esc="o.wage"/></td>
+                        </tr>
+                        <tr>
+                          <td>HORAS EXTRAS - PROMEDIO: </td>
+                          <td><span t-esc="o.wage"/></td>
+                        </tr>
+                        <tr>
+                          <td>COMISIONES U OTRAS REMUNERACIONES - PROMEDIO: </td>
+                          <td><span t-esc="o.wage"/></td>
+                        </tr>
+                        <tr>
+                          <td>PROMEDIO DE GRATIFICACIONES PERCIBIDAS: </td>
+                          <td><span t-esc="o.wage"/></td>
+                        </tr>
+                        <tr>
+                          <td>TOTAL REMUNERACIÓN COMPUTABLE: </td>
+                          <td><span t-esc="o.wage"/></td>
+                        </tr>
+                     </tbody>
+                    </table>
+                    <br/>
+                    <table class="table table-sm o_main_table">
+                      <thead style="display: table-row-group">
+                        <tr>
+                            <th name="th_tercero" class="text-center" colspan ="2"></th>
+                        </tr>
+                      </thead>
+                      <tbody class="sale_tbody">
+                        <tr>
+                          <td>PERIODO 2020 - 2021 TRUNCO </td>
+                          <td><span t-esc="o.date_start"/></td>
+                        </tr>
+                        <tr>
+                          <td>PERIODO COMPUTABLE </td>
+                          <td><span t-esc="o.date_start"/></td>
+                        </tr>
+                     </tbody>
+                    </table>
+                    <br/>
+
+                    <div style="page-break-inside:avoid;" class="row">
+                        <div class="col-6">
+                            <span>FIRMA: </span>
+                        </div>
+                    </div>
+                    <div style="margin-top:15px; page-break-inside:avoid;" class="row">
+                        <div class="col-6">
+                            <span>EMPLEADO:<b> <t t-esc="employee.name or ''"/></b></span>
+                        </div>
+                    </div>
+                    <div style="page-break-inside:avoid;" class="row">
+                        <div class="col-6">
+                            <span><t t-esc="employee.plame_employee_document_type_id.short_name + ':'"/>
+                              <b><t t-esc="employee.identification_id or ''"/></b>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div style="page-break-inside:avoid;" class="row">
+                        <div class="col-6">
+                            <span>FIRMA:</span>
+                        </div>
+                    </div>
+                    <div class="oe_structure"/>
+                </div>
+            </t>
+        </template>
+
+        <template id="report_hr_contract">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-set="lang" t-value="user.sudo().lang"/>
+                    <t t-call="mstech_montcafe.report_hr_contract_document" t-lang="lang"/>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>
+
+

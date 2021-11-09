@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="report_hr_payslip_mont_document">
+            <t t-call="web.external_layout">
+                <t t-set="o" t-value="o.with_context(lang=lang)"/>
+                <t t-set="doc" t-value="o"/>
+                <t t-if="not company">
+                    <!-- Multicompany -->
+                    <t t-if="company_id">
+                        <t t-set="company" t-value="company_id"/>
+                    </t>
+                    <t t-elif="o and 'company_id' in o">
+                        <t t-set="company" t-value="o.company_id.sudo()"/>
+                    </t>
+                    <t t-else="else">
+                        <t t-set="company" t-value="res_company"/>
+                    </t>
+                </t>
+                <div class="page" style="text-align:justify; text-justify:inter-word; margin-right:5%; margin-left:10%;" t-if="o.id">
+                    <t t-set="employee" t-value="o.employee_id"/>
+                    <div class="oe_structure"/>
+                    <div style="page-break-inside:avoid;" class="row text-center">
+                        <div class="col h6">
+                            <span>
+                                <b><u>BOLETA DE PAGO</u></b><br/>
+                                PERIODO: <span t-field="o.date_from"/> - <span t-field="o.date_to"/>
+                            </span>
+                        </div>
+                    </div>
+                    <br/>
+                    <div class="row mt32 mb32" id="informations">
+                      <div class="col-auto col-3 mw-100 mb-2">
+                          <strong>TRABAJADOR: </strong>
+                          <p class="m-0" t-field="employee.name"/>
+                      </div>
+                      <div class="col-auto col-3 mw-100 mb-2">
+                          <strong>N° DNI: </strong>
+                          <p class="m-0" t-field="employee.identification_id"/>
+                      </div>
+                      <div class="col-auto col-3 mw-100 mb-2">
+                          <strong>FECHA INGRESO:</strong>
+                          <p class="m-0" t-field="o.contract_id.date_start"/>
+                      </div>
+                      <div class="col-auto col-3 mw-100 mb-2">
+                          <strong>CARGO: </strong>
+                          <p class="m-0" t-esc="o.contract_id.job_id.name"/>
+                      </div>
+                    </div>
+                    <div class="row mt32 mb32" id="information">
+                      <div class="col-auto col-3 mw-100 mb-2">
+                          <strong>REMUN. BÁSICA: </strong>
+                          <p class="m-0" t-field="o.contract_id.wage"/>
+                      </div>
+                      <div class="col-auto col-3 mw-100 mb-2">
+                          <strong>SIST. PENSIONES: </strong>
+                          <p class="m-0" t-field="employee.sist_pension"/>
+                      </div>
+                      <div class="col-auto col-3 mw-100 mb-2">
+                          <strong>REGIMEN LABORAL:</strong>
+                          <p class="m-0" t-field="o.struct_id.name"/>
+                      </div>
+                    </div>
+                    <div id="total">
+                      <table class="table table-sm">
+                        <thead class="o_black_border">
+                          <tr>
+                            <th>Tipo</th>
+                            <th>N° de Horas</th>
+                            <th>N° de Días</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <span t-foreach="o.worked_days_line_ids" t-as="worked_days">
+                            <t t-if="worked_days.code != 'OUT'">
+                              <tr style="color:none">
+                                <td><span t-field="worked_days.name"/></td>
+                                <td><span t-field="worked_days.number_of_hours"/></td>
+                                <td><span t-field="worked_days.number_of_days"/></td>
+                              </tr>
+                            </t>
+                          </span>
+                        </tbody>
+                      </table>
+                    </div>
+                    <div style="page-break-inside:avoid;" class="row">
+                      <div class="col-4">
+                          <span>REMUNERACIONES</span>
+                      </div>
+                      <div class="col-4">
+                        <span> DESCUENTOS</span>
+                      </div>
+                      <div class="col-4">
+                        <span>APORTES EMPLEADOR</span>
+                      </div>
+                    </div>
+                    <div style="page-break-inside:avoid;" class="row">
+                      <div class="col-2"><font style="font-size: 13px;">
+                        <span>
+                          Básico<br/>
+                          Asignación Familiar<br/>
+                          Vales de Ley 28501<br/>
+                          Bonif. Tmpo de Serv.<br/>
+                          Remun. Vacacional Adel.<br/>
+                        </span>
+                      </font></div>
+                      <div class="col-2" style=" text-align: right; ">
+                        <span>
+                          <span t-field="o.contract_id.wage"/><br/>
+                          <span t-field="o.remun_fam" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.company_id.currency_id}"/><br/>
+                          <span t-field="o.vales_ley" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.company_id.currency_id}"/><br/>
+                          <span t-field="o.bono" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.company_id.currency_id}"/><br/>
+                          <span t-field="o.rem_vac_ad" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.company_id.currency_id}"/><br/>
+                        </span>
+                      </div>
+                      <div class="col-2"><font style="font-size: 13px;">
+                        <span>
+                          AFP Aportes Obligatorio<br/>
+                          AFP Prima de Seguro<br/>
+                          AFP Comision Variable<br/>
+                          Imp. a la Renta de quinta<br/>
+                          Adelanto de Vacaciones<br/>
+                          Cuota Prestamo Adm.<br/>
+                          Cuota Prestamo Viv.<br/>
+                          EsSalud + Vida<br/>
+                          Prima Seg. Medico<br/>
+                          Vales de Consumo<br/>
+                        </span>
+                      </font></div>
+                      <div class="col-2" style=" text-align: right; ">
+                        <span>
+                          <span t-field="o.afp_aporte" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.company_id.currency_id}"/><br/>
+                          <span t-field="o.afp_prima" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.company_id.currency_id}"/><br/>
+                          <span t-field="o.afp_comision" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.company_id.currency_id}"/><br/>
+                          <span t-field="o.monto_quinta_actual" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.company_id.currency_id}"/><br/>
+                          <span t-field="o.vac_ad" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.company_id.currency_id}"/><br/>
+                          <span t-field="o.cuota_pres_adm" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.company_id.currency_id}"/><br/>
+                          <span t-field="o.cuota_pres_viv" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.company_id.currency_id}"/><br/>
+                          <span t-field="o.essalud_vida" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.company_id.currency_id}"/><br/>
+                          <span t-field="o.prim_seg_med" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.company_id.currency_id}"/><br/>
+                          <span t-field="o.vale_consumo" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.company_id.currency_id}"/><br/>
+                        </span>
+                      </div>
+                      <div class="col-2"><font style="font-size: 13px;">
+                        <span>
+                          Aportes EPS - EsSalud<br/>
+                          Aportes EsSalud<br/>
+                          Seguro de vida Ley<br/>
+                          Seg. Acc. Personal<br/>
+                        </span>
+                      </font></div>
+                      <div class="col-2" style=" text-align: right; ">
+                        <span>
+                          <span t-field="o.essalud" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.company_id.currency_id}"/><br/>
+                          <span t-field="o.essalud_aporte" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.company_id.currency_id}"/><br/>
+                          <span t-field="o.seguro_vida" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.company_id.currency_id}"/><br/>
+                          <span t-field="o.seg_acc_pers" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.company_id.currency_id}"/><br/>
+                        </span>
+                      </div>
+                    </div>
+                    <br/>
+                    <div style="page-break-inside:avoid;" class="row">
+                        <div class="col-6">
+                            <span>FIRMA EMPLEADOR: </span>
+                        </div>
+                        <div class="col-6">
+                            <span>FIRMA TRABAJADOR:</span>
+                        </div>
+                    </div>
+                    <div class="oe_structure"/>
+                </div>
+            </t>
+        </template>
+
+        <template id="report_hr_payslip_mont">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-set="lang" t-value="user.sudo().lang"/>
+                    <t t-call="mstech_montcafe.report_hr_payslip_mont_document"  t-lang="lang"/>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>

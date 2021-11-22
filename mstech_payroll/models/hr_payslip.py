@@ -157,3 +157,50 @@ class HrPayslip(models.Model):
         res = super().compute_sheet()
         return res
 
+class HrPayrollStructure(models.Model):
+    _inherit = 'hr.payroll.structure'
+
+    @api.model
+    def _get_default_rule_ids(self):
+        rules = super._get_default_rule_ids()
+
+        rules.write ([
+            (0, 0, {
+                'name': 'CTS',
+                'sequence': 4,
+                'code': 'CTS',
+                'category_id': self.env.ref('hr_payroll.ALW').id,
+                'condition_select': 'none',
+                'amount_select': 'code',
+                'amount_python_compute': 'result = payslip.cts',
+            }),
+            (0, 0, {
+                'name': 'Gratificacion',
+                'sequence': 5,
+                'code': 'GRT',
+                'category_id': self.env.ref('hr_payroll.ALW').id,
+                'condition_select': 'none',
+                'amount_select': 'code',
+                'amount_python_compute': 'result = payslip.grati',
+            }),
+            (0, 0, {
+                'name': 'Sistema de Pensiones',
+                'sequence': 6,
+                'code': 'SNP',
+                'category_id': self.env.ref('hr_payroll.DED').id,
+                'condition_select': 'none',
+                'amount_select': 'code',
+                'amount_python_compute': 'result = payslip.afp_prima + payslip.afp_comision + payslip.afp_aporte',
+            }),
+            (0, 0, {
+                'name': 'Renta de quinta',
+                'sequence': 7,
+                'code': 'R5ta',
+                'category_id': self.env.ref('hr_payroll.DED').id,
+                'condition_select': 'none',
+                'amount_select': 'code',
+                'amount_python_compute': 'result = payslip.monto_quinta_actual',
+            })
+        ])
+
+        return rules

@@ -10,6 +10,7 @@
     'website': 'https://www.mstech.pe',
     'depends': [
         'hr',
+        'hr.payroll',
     ],
     'data': [
         'security/ir.model.access.csv',

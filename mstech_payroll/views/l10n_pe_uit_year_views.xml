@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_l10n_pe_uit_year_tree" model="ir.ui.view">
+            <field name="name">l10n_pe.uit.year.tree</field>
+            <field name="model">l10n_pe.uit.year</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree editable="bottom">
+                    <field name="year" options="{'type':'number', 'step':1}"/>
+                    <field name="uit"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_l10n_pe_uit_year" model="ir.actions.act_window">
+            <field name="name">Valor Anual de la UIT</field>
+            <field name="res_model">l10n_pe.uit.year</field>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+            <field name="view_mode">tree</field>
+        </record>
+
+        <menuitem id="menu_action_l10n_pe_uit_year"
+            name="Valor Anual de la UIT"
+            action="action_l10n_pe_uit_year"
+            parent="hr_payroll.menu_hr_salary_configuration"
+            sequence="20"/>
+    </data>
+</odoo>

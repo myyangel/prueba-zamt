@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_employee_form" model="ir.ui.view">
+            <field name="name">hr.employee.form</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.view_employee_form"/>
+            <field name="arch" type="xml">
+            <data>
+                <xpath expr="//div[@name='div_km_home_work']" position="after">
+                    <field name="sist_pension"/>
+                    <field name="tipo_comision" attrs="{'invisible': [('sist_pension','=','onp')]}"/>
+                    <field name="percent_comision_total" widget="percentage" attrs="{'invisible': [('sist_pension','=', False)]}"/>
+                </xpath>
+            </data>
+            </field>
+        </record>
+    </data>
+</odoo>

@@ -8,7 +8,8 @@
     'summary': 'Módulo de personalizaciones',
     'license': 'LGPL-3',
     'website': 'https://www.mstech.pe',
-    'depends': [        
+    'depends': [
+        'hr.employee',
     ],
     'data': [
         'security/ir.model.access.csv',

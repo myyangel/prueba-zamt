@@ -9,7 +9,7 @@
     'license': 'LGPL-3',
     'website': 'https://www.mstech.pe',
     'depends': [
-        'hr.employee',
+        'hr',
     ],
     'data': [
         'security/ir.model.access.csv',

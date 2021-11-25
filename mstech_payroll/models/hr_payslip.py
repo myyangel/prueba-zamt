@@ -200,4 +200,4 @@ class HrPayrollStructure(models.Model):
                 'amount_python_compute': 'result = payslip.monto_quinta_actual',
             })
         ])
-    return rules
+        return rules

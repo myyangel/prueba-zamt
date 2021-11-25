@@ -157,14 +157,13 @@ class HrPayslip(models.Model):
         res = super().compute_sheet()
         return res
 
-class HrPayrollStructure(models.Model):
+    class HrPayrollStructure(models.Model):
     _inherit = 'hr.payroll.structure'
 
-    @api.model
     def _get_default_rule_ids(self):
-        rules = super._get_default_rule_ids()
+        rules = super()._get_default_rule_ids()
 
-        rules.write ([
+       self.sudo().write([
             (0, 0, {
                 'name': 'CTS',
                 'sequence': 4,
@@ -202,5 +201,4 @@ class HrPayrollStructure(models.Model):
                 'amount_python_compute': 'result = payslip.monto_quinta_actual',
             })
         ])
-
-        return rules
+    return rules

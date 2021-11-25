@@ -162,7 +162,7 @@ class HrPayrollStructure(models.Model):
 
     def _get_default_rule_ids(self):
         rules = super()._get_default_rule_ids()
-        self.sudo().write([
+        self.sudo().update([
             (0, 0, {
                 'name': 'CTS',
                 'sequence': 4,
